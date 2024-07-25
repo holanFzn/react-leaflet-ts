@@ -57,7 +57,7 @@ export default function MapSection() {
                     <p>{latLang.lat} & {latLang.long}</p>
                     <button onClick={getLocation}>get location</button>
                 </div>
-                {initLocate && <MapContainer style={{ height: "500px", width: "1000px" }} center={[latLang.lat, latLang.long]} zoom={13} scrollWheelZoom={true}>
+                {initLocate && <MapContainer style={{ height: "500px", width: "1000px" }} center={[latLang.lat, latLang.long]} zoom={18} scrollWheelZoom={true}>
                     <TileLayer
 
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
