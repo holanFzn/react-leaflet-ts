@@ -37,6 +37,13 @@ export default function MapSection() {
                     console.log(err);
                 }
             })
+        }else {
+            setLatLang({
+                lat:51.505,
+                long:-0.09
+            })
+            setInitLocate(true)
+
         }
     }, [])
     if (!isClient) {
