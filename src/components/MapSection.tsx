@@ -4,43 +4,59 @@ import 'leaflet/dist/leaflet.css'
 import { useEffect, useState } from 'react'
 import LocationMarker from './LocationMarker'
 
-
 export default function MapSection() {
     const [isClient, setIsClient] = useState(false)
     const [locate, setLocate] = useState(false)
-    const getLocation= ()=>{
+    const [latLang, setLatLang] = useState({lat: 0, long:0})
+    const [initLocate, setInitLocate] = useState(false)
+    const getLocation = () => {
         setLocate(true)
     }
 
-useEffect(()=>{
-    setIsClient(true)
+    useEffect(() => {
+        setIsClient(true)
 
-    // if (
-    //     navigator.userAgent.indexOf("AlipayClient") > -1 ||
-    //     navigator.userAgent.indexOf("mPaaSClient") > -1
-    // ) {
-    //     let test = { payload: popularMovies.results[0] }
-
-    //     window.my.navigateTo({ url: "/pages/adit/home/home?message=" + encodeURIComponent(JSON.stringify(test)) })
-    // }
-},[])
-  if (!isClient) {
-    return null;
-  }
+        if (
+            navigator.userAgent.indexOf("AlipayClient") > -1 ||
+            navigator.userAgent.indexOf("mPaaSClient") > -1
+        ) {
+            console.log("triggered")
+            
+            // let test = { payload: popularMovies.results[0] }
+            // window.my.navigateTo({ url: "/pages/index/index"})
+            window.my.getLocation({
+                success(res) {
+                    console.log(res, "<<<<");
+                    setLatLang({
+                        lat: +res.latitude,
+                        long: +res.longitude
+                    })
+                    setInitLocate(true)
+                },
+                fail(err) {
+                    console.log(err);
+                }
+            })
+        }
+    }, [])
+    if (!isClient) {
+        return null;
+    }
     return (
         <>
             <div >
                 <div>
                     <p>MAP</p>
+                    <p>{latLang.lat} & {latLang.long}</p>
                     <button onClick={getLocation}>get location</button>
                 </div>
-               {isClient && <MapContainer  style={{height:"500px", width:"1000px"}} center={[51.505, -0.09]} zoom={13} scrollWheelZoom={true}>
+                {initLocate && <MapContainer style={{ height: "500px", width: "1000px" }} center={[latLang.lat, latLang.long]} zoom={13} scrollWheelZoom={true}>
                     <TileLayer
-                        
+
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     />
-                    <Marker position={[51.505, -0.09]}>
-  
+                    <Marker position={[latLang.lat, latLang.long]}>
+
                     </Marker>
                     <LocationMarker setLocate={setLocate} locate={locate} ></LocationMarker>
                 </MapContainer>}

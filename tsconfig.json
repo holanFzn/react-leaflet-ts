@@ -1,5 +1,9 @@
 {
   "compilerOptions": {
+    "types": [
+       "@mini-types/alipay"
+    ],
+
     "target": "es5",
     "lib": [
       "dom",
