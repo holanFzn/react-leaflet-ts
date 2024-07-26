@@ -1,38 +1,69 @@
 "use client"
-import { Popup } from "leaflet";
+import { LatLng, Popup } from "leaflet";
 import { Dispatch, useEffect, useState } from "react";
-import { Marker, useMapEvents } from "react-leaflet";
+import { Marker, useMap, useMapEvents } from "react-leaflet";
 
-interface LocationMarkerProps{
-    setLocate:Dispatch<boolean>
-    locate:boolean
+interface LocationMarkerProps {
+    setLocate: Dispatch<boolean>
+    locate: boolean
+    // latLang:{lat: number, long:number}
+    // setLatLang: Dispatch<{lat: number, long:number}>
 }
-export default function LocationMarker ({ setLocate, locate }: LocationMarkerProps) {
-    const [position, setPosition] = useState({lat:0, lng:0});
+export default function LocationMarker({ setLocate, locate }: LocationMarkerProps) {
+    const [position, setPosition] = useState({ lat: 0, lng: 0 });
+    const mapAlt = useMap()
     const map = useMapEvents({
         locationfound(e) {
             console.log(e, "<<<<<");
-            let {lat, lng} = e.latlng
-            setPosition({lat, lng});
-            map.flyTo(e.latlng,18);
+            let { lat, lng } = e.latlng
+            setPosition({ lat, lng });
+            map.flyTo(e.latlng, 18);
             setLocate(false)
         }
     });
+    const locViaMp = async ()=>{
+        window.my.getLocation({
+            success(res) {
+                console.log(res, "<<<<");
+                setPosition({
+                    lat: +res.latitude,
+                    lng: +res.longitude
+                })
+                let newLoc = new LatLng(+res.latitude, +res.longitude)
 
+                map.flyTo(newLoc, 18)
+                setLocate(false)
+            },
+            fail(err) {
+                console.log(err);
+            }
+        })
+    }
     useEffect(() => {
         if (locate) {
-            map.locate({
-                enableHighAccuracy: true,
-            });
+            console.log("locate");
+
+            if (
+                navigator.userAgent.indexOf("AlipayClient") > -1 ||
+                navigator.userAgent.indexOf("mPaaSClient") > -1
+            ) {
+
+            } else {
+                map.locate({
+                    enableHighAccuracy: true,
+                });
+            }
+
+
         }
     }, [locate, map]);
 
     return position === null ? null : (
         <>
-        <h1>test</h1>
-        <Marker position={position} >
-            {/* <Popup>You are here</Popup> */}
-        </Marker>
+            <h1>test</h1>
+            <Marker position={position} >
+                {/* <Popup>You are here</Popup> */}
+            </Marker>
         </>
     );
 };
