@@ -47,7 +47,7 @@ export default function LocationMarker({ setLocate, locate }: LocationMarkerProp
                 navigator.userAgent.indexOf("AlipayClient") > -1 ||
                 navigator.userAgent.indexOf("mPaaSClient") > -1
             ) {
-
+                locViaMp()
             } else {
                 map.locate({
                     enableHighAccuracy: true,
