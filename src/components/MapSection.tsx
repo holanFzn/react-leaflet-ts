@@ -3,6 +3,8 @@ import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import { useEffect, useState } from 'react'
 import LocationMarker from './LocationMarker'
+import "leaflet-defaulticon-compatibility"
+import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css"
 
 export default function MapSection() {
     const [isClient, setIsClient] = useState(false)
@@ -65,7 +67,9 @@ export default function MapSection() {
                     <Marker position={[latLang.lat, latLang.long]}>
 
                     </Marker>
-                    <LocationMarker setLocate={setLocate} locate={locate} ></LocationMarker>
+                    <LocationMarker setLocate={setLocate} locate={locate} >
+                        
+                    </LocationMarker>
                 </MapContainer>}
             </div>
         </>
