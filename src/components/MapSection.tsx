@@ -6,6 +6,7 @@ import LocationMarker from './LocationMarker'
 import "leaflet-defaulticon-compatibility"
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css"
 import { RoutingMachine } from './RouteComp'
+import { Message } from '../interface'
 
 interface mapType {
     latLang: { lat: number, long: number }
@@ -32,7 +33,7 @@ export default function MapSection() {
     const getLocation = () => {
         setLocate(true)
     }
-    const setLocation = async () => {
+    const loadLocation = async () => {
         try {
             if (
                 navigator.userAgent.indexOf("AlipayClient") > -1 ||
@@ -84,7 +85,7 @@ export default function MapSection() {
     useEffect(() => {
         setIsClient(true)
 
-
+        loadLocation()
     }, [])
     if (!isClient) {
         return null;

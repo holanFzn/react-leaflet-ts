@@ -1,4 +1,4 @@
-interface Message{
+export interface Message{
     "currentTarget": {
         "dataset": Object,
         "id": string,
