@@ -11,10 +11,13 @@ interface mapType {
     latLang: { lat: number, long: number }
     setLatLang: Dispatch<{ lat: number, long: number }>
 }
-declare global{
-    interface Window{
-        my:{
-            postMessage : (value:Object)=>{
+declare global {
+    interface Window {
+        my: {
+            postMessage: (value: Object) => {
+
+            },
+            onMessage: (e: Message) => {
 
             }
         }
@@ -29,52 +32,66 @@ export default function MapSection() {
     const getLocation = () => {
         setLocate(true)
     }
+    const setLocation = async () => {
+        try {
+            if (
+                navigator.userAgent.indexOf("AlipayClient") > -1 ||
+                navigator.userAgent.indexOf("mPaaSClient") > -1
+            ) {
+                console.log("triggered")
 
+                // let test = { payload: popularMovies.results[0] }
+                // window.my.navigateTo({ url: "/pages/index/index"})
+                // window.my.getLocation({
+                //     success(res) {
+                //         console.log(res, "<<<<");
+                //         setLatLang({
+                //             lat: +res.latitude,
+                //             long: +res.longitude
+                //         })
+                //         setInitLocate(true)
+                //     },
+                //     fail(err) {
+                //         console.log(err);
+                //     }
+                // })
+
+                window.my.postMessage({ message: "request location" })
+
+                window.my.onMessage = function (e: Message) {
+                    console.log(e, "<<<<<<<dari mpaas");
+                    
+                    return {}
+                }
+                setLatLang({
+                    lat: 51.505,
+                    long: -0.09
+                })
+                setInitLocate(true)
+            } else {
+                setLatLang({
+                    lat: 51.505,
+                    long: -0.09
+                })
+                setInitLocate(true)
+
+            }
+        } catch (error) {
+            console.log(error);
+
+        }
+    }
     useEffect(() => {
         setIsClient(true)
 
-        if (
-            navigator.userAgent.indexOf("AlipayClient") > -1 ||
-            navigator.userAgent.indexOf("mPaaSClient") > -1
-        ) {
-            console.log("triggered")
 
-            // let test = { payload: popularMovies.results[0] }
-            // window.my.navigateTo({ url: "/pages/index/index"})
-            // window.my.getLocation({
-            //     success(res) {
-            //         console.log(res, "<<<<");
-            //         setLatLang({
-            //             lat: +res.latitude,
-            //             long: +res.longitude
-            //         })
-            //         setInitLocate(true)
-            //     },
-            //     fail(err) {
-            //         console.log(err);
-            //     }
-            // })
-            window.my.postMessage({message:"halo"})
-            setLatLang({
-                lat: 51.505,
-                long: -0.09
-            })
-            setInitLocate(true)
-        } else {
-            setLatLang({
-                lat: 51.505,
-                long: -0.09
-            })
-            setInitLocate(true)
-
-        }
     }, [])
     if (!isClient) {
         return null;
     }
     return (
         <>
-            <MapContext.Provider value={{latLang,setLatLang}} >
+            <MapContext.Provider value={{ latLang, setLatLang }} >
 
                 <div >
                     <div>
