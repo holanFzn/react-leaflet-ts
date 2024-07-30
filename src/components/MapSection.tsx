@@ -7,7 +7,7 @@ import "leaflet-defaulticon-compatibility"
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css"
 import { RoutingMachine } from './RouteComp'
 import { Message } from '../interface'
-
+import "https://appx/web-view.min.js"
 interface mapType {
     latLang: { lat: number, long: number }
     setLatLang: Dispatch<{ lat: number, long: number }>
@@ -18,9 +18,8 @@ declare global {
             postMessage: (value: Object) => {
 
             },
-            onMessage: (e: Message) => {
+            onMessage: (callback: (e: Message) => void) => void;
 
-            }
         }
     }
 }
@@ -59,11 +58,11 @@ export default function MapSection() {
 
                 window.my.postMessage({ message: "request location" })
 
-                window.my.onMessage = function (e: Message) {
+                window.my.onMessage((e: Message)=> {
                     console.log(e, "<<<<<<<dari mpaas");
-                    
+
                     return {}
-                }
+                })
                 setLatLang({
                     lat: 51.505,
                     long: -0.09
