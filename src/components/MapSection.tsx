@@ -11,6 +11,15 @@ interface mapType {
     latLang: { lat: number, long: number }
     setLatLang: Dispatch<{ lat: number, long: number }>
 }
+declare global{
+    interface Window{
+        my:{
+            postMessage : (value:Object)=>{
+
+            }
+        }
+    }
+}
 export const MapContext = createContext<mapType | undefined>(undefined)
 export default function MapSection() {
     const [isClient, setIsClient] = useState(false)
@@ -45,6 +54,7 @@ export default function MapSection() {
             //         console.log(err);
             //     }
             // })
+            window.my.postMessage({message:"halo"})
             setLatLang({
                 lat: 51.505,
                 long: -0.09
