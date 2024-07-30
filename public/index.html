@@ -34,13 +34,13 @@
         "/" +
         "script>"
       );
+      window.my.postMessage({ name: "test web-view" });
+      // Receives messages from the Mini Program.
+      window.my.onMessage = function (e) {
+        console.log(e, "<<<<<dari mpaas init"); //{'sendToWebView': '1'}
+      }
     }
 
-    window.my.postMessage({ name: "test web-view" });
-    // Receives messages from the Mini Program.
-    window.my.onMessage = function (e) {
-      console.log(e, "<<<<<dari mpaas init"); //{'sendToWebView': '1'}
-    }
   </script>
   <title>React App</title>
 </head>
