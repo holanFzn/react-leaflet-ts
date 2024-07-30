@@ -64,6 +64,7 @@ export default function MapSection() {
 
                     return {}
                 }
+
                 setLatLang({
                     lat: 51.505,
                     long: -0.09
